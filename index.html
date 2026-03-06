@@ -1,176 +1,274 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Chocolate Reveal Game 🍫</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chocolate Reveal Game 🍫</title>
 
-<style>
-:root{
-  --bg:#0b0f1a; --card:#121a2b; --text:#e8eefc; --muted:#a8b3d6;
-}
-*{box-sizing:border-box}
-body{
-  margin:0; min-height:100vh; display:grid; place-items:center;
-  background: radial-gradient(1200px 600px at 20% 10%, #1a2550 0%, transparent 60%),
-              radial-gradient(900px 500px at 90% 90%, #3b2346 0%, transparent 55%),
-              var(--bg);
-  color:var(--text);
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  padding:20px;
-}
-.card{
-  width:min(650px, 100%);
-  background: rgba(18,26,43,.95);
-  border-radius:18px;
-  padding:22px;
-  border:1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 20px 40px rgba(0,0,0,.5);
-}
-h1{margin:0 0 10px}
-.q{margin-top:15px}
-.q-title{margin-bottom:10px;font-weight:600}
-.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-button{
-  padding:12px;border-radius:12px;
-  border:1px solid rgba(255,255,255,0.2);
-  background:rgba(255,255,255,0.05);
-  color:white;font-weight:600;cursor:pointer;
-}
-button:hover{border-color:#ffd36b}
-.footer{
-  margin-top:15px;
-  display:flex;
-  justify-content:space-between;
-  font-size:12px;
-  color:var(--muted);
-}
-.progress{
-  height:8px;width:150px;
-  border-radius:999px;
-  overflow:hidden;
-  background:rgba(255,255,255,0.1);
-}
-.bar{
-  height:100%;width:0%;
-  background:linear-gradient(90deg,#ffd36b,#ff7ad9);
-  transition:.3s;
-}
-.reveal{
-  display:none;
-  margin-top:20px;
-  padding:18px;
-  border-radius:14px;
-  background:rgba(0,0,0,.4);
-  border:1px solid rgba(255,211,107,.5);
-}
-.emoji{font-size:45px}
-.summary{margin-top:12px;font-size:13px;color:#ccc}
-.restart{
-  margin-top:15px;
-  background:rgba(255,255,255,0.05);
-}
-</style>
+  <style>
+    :root{
+      --bg:#0b0f1a;
+      --card:#121a2b;
+      --text:#e8eefc;
+      --muted:#a8b3d6;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      background:
+        radial-gradient(1200px 600px at 20% 10%, #1a2550 0%, transparent 60%),
+        radial-gradient(900px 500px at 90% 90%, #3b2346 0%, transparent 55%),
+        var(--bg);
+      color:var(--text);
+      font-family:system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      padding:20px;
+    }
+
+    .card{
+      width:min(650px, 100%);
+      background:rgba(18,26,43,.95);
+      border-radius:18px;
+      padding:22px;
+      border:1px solid rgba(255,255,255,0.1);
+      box-shadow:0 20px 40px rgba(0,0,0,.5);
+    }
+
+    h1{
+      margin:0 0 10px;
+      text-align:center;
+    }
+
+    .q{
+      margin-top:15px;
+    }
+
+    .q-title{
+      margin-bottom:10px;
+      font-weight:600;
+      font-size:18px;
+    }
+
+    .btn-row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+
+    button{
+      padding:12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.2);
+      background:rgba(255,255,255,0.05);
+      color:white;
+      font-weight:600;
+      cursor:pointer;
+      transition:.25s ease;
+    }
+
+    button:hover{
+      border-color:#ffd36b;
+      transform:translateY(-1px);
+    }
+
+    .footer{
+      margin-top:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:15px;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .progress{
+      height:8px;
+      width:150px;
+      border-radius:999px;
+      overflow:hidden;
+      background:rgba(255,255,255,0.1);
+    }
+
+    .bar{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,#ffd36b,#ff7ad9);
+      transition:.3s;
+    }
+
+    .reveal{
+      display:none;
+      margin-top:20px;
+      padding:18px;
+      border-radius:14px;
+      background:rgba(0,0,0,.4);
+      border:1px solid rgba(255,211,107,.5);
+      text-align:center;
+    }
+
+    .emoji{
+      font-size:45px;
+    }
+
+    .summary{
+      margin-top:12px;
+      font-size:13px;
+      color:#ccc;
+      line-height:1.6;
+    }
+
+    .restart{
+      margin-top:15px;
+      background:rgba(255,255,255,0.05);
+    }
+
+    #imageBox{
+      display:none;
+      margin-top:18px;
+      opacity:0;
+      transition:opacity .6s ease;
+    }
+
+    #imageBox img{
+      width:min(280px, 100%);
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.15);
+      box-shadow:0 10px 25px rgba(0,0,0,.35);
+    }
+
+    .reveal-btn{
+      margin-top:16px;
+    }
+  </style>
 </head>
 
 <body>
+  <div class="card">
+    <h1>Chocolate speaks the language of the heart 🍫</h1>
 
-<div class="card">
-  <h1>______ speaks the language of the heart🍫</h1>
+    <div class="q" id="questionBox">
+      <div class="q-title" id="questionText"></div>
 
-  <div class="q" id="questionBox">
-    <div class="q-title" id="questionText"></div>
-    <div class="btn-row">
-      <button id="optA"></button>
-      <button id="optB"></button>
+      <div class="btn-row">
+        <button id="optA"></button>
+        <button id="optB"></button>
+      </div>
+
+      <div class="footer">
+        <div id="count"></div>
+        <div class="progress">
+          <div class="bar" id="bar"></div>
+        </div>
+      </div>
     </div>
 
-    <div class="footer">
-      <div id="count"></div>
-      <div class="progress"><div class="bar" id="bar"></div></div>
+    <div class="reveal" id="revealBox">
+      <div class="emoji">🐰🍫✨</div>
+      <h2>Chocolate!.......</h2>
+
+      <p>
+        You've unlocked:<br>
+        <strong>Rabbit-shaped Swiss golden-foiled dark chocolate palette</strong>
+      </p>
+
+      <div class="summary" id="summary"></div>
+
+      <button class="reveal-btn" id="revealBtn" onclick="showImage()">Reveal 🎁</button>
+
+      <div id="imageBox">
+        <!-- Replace chocolate.png with your image file name -->
+        <img src="chocolate.png" alt="Rabbit-shaped Swiss golden-foiled dark chocolate palette">
+      </div>
+
+      <button class="restart" onclick="restart()">Restart</button>
     </div>
   </div>
 
-  <div class="reveal" id="revealBox">
-    <div class="emoji">🐰🍫✨</div>
-    <h2>Chocolate!.......</h2>
-    <p>
-      You've unlocked:<br>
-      <strong>Rabbit-shaped Swiss golden-foiled dark chocolate palette</strong>
-    </p>
+  <script>
+    const QUESTIONS = [
+      { q:"Pick your craving:", a:"Chocolate 🍫", b:"Cake 🍰" },
+      { q:"Pick an animal:", a:"Rabbit 🐰", b:"Gazelle 🦌" },
+      { q:"Choose a country vibe:", a:"Swiss 🇨🇭", b:"German 🇩🇪" },
+      { q:"Chocolate type:", a:"Dark 😌", b:"Milky 🙂" },
+      { q:"Packaging:", a:"Golden palette ✨", b:"White 🤍" },
+      { q:"Texture:", a:"Smooth 😍", b:"Crunchy 🌰" },
+      { q:"Style:", a:"Elegant 🎩", b:"Playful 🎈" },
+      { q:"Inside:", a:"Solid 🍫", b:"Filled 🍓" },
+      { q:"Size:", a:"Big 🔥", b:"Mini 💫" },
+      { q:"Taste level:", a:"Bittersweet 💎", b:"Very sweet 🍬" },
+      { q:"Quality:", a:"Premium 👑", b:"Classic 🏷️" },
+      { q:"Ready to reveal?", a:"Yes 😌", b:"Reveal now ⚡" }
+    ];
 
-    <div class="summary" id="summary"></div>
+    let idx = 0;
+    let picks = [];
 
-    <button class="restart" onclick="restart()">Restart</button>
-  </div>
-</div>
+    const questionText = document.getElementById("questionText");
+    const optA = document.getElementById("optA");
+    const optB = document.getElementById("optB");
+    const count = document.getElementById("count");
+    const bar = document.getElementById("bar");
+    const questionBox = document.getElementById("questionBox");
+    const revealBox = document.getElementById("revealBox");
+    const summary = document.getElementById("summary");
+    const imageBox = document.getElementById("imageBox");
+    const revealBtn = document.getElementById("revealBtn");
 
-<script>
-const QUESTIONS = [
-  {q:"Pick your craving:", a:"Chocolate 🍫", b:"Cake 🍰"},
-  {q:"Pick an animal:", a:"Rabbit 🐰", b:"Gazelle 🦌"},
-  {q:"Choose a country vibe:", a:"Swiss 🇨🇭", b:"German 🇩🇪"},
-  {q:"Chocolate type:", a:"Dark 😌", b:"Milky 🙂"},
-  {q:"Packaging:", a:"Golden palette ✨", b:"White 🤍"},
-  {q:"Texture:", a:"Smooth 😍", b:"Crunchy 🌰"},
-  {q:"Style:", a:"Elegant 🎩", b:"Playful 🎈"},
-  {q:"Inside:", a:"Solid 🍫", b:"Filled 🍓"},
-  {q:"Size:", a:"Big 🔥", b:"Mini 💫"},
-  {q:"Taste level:", a:"Bittersweet 💎", b:"Very sweet 🍬"},
-  {q:"Quality:", a:"Premium 👑", b:"Classic 🏷️"},
-  {q:"Ready to reveal?", a:"Yes 😌", b:"Reveal now ⚡"}
-];
+    function render() {
+      questionText.textContent = QUESTIONS[idx].q;
+      optA.textContent = QUESTIONS[idx].a;
+      optB.textContent = QUESTIONS[idx].b;
+      count.textContent = `Question ${idx + 1}/${QUESTIONS.length}`;
+      bar.style.width = (idx / QUESTIONS.length * 100) + "%";
+    }
 
-let idx=0;
-let picks=[];
+    function choose(choice) {
+      picks.push(choice);
+      idx++;
 
-const questionText=document.getElementById("questionText");
-const optA=document.getElementById("optA");
-const optB=document.getElementById("optB");
-const count=document.getElementById("count");
-const bar=document.getElementById("bar");
-const questionBox=document.getElementById("questionBox");
-const revealBox=document.getElementById("revealBox");
-const summary=document.getElementById("summary");
+      if (idx >= QUESTIONS.length) {
+        finish();
+        return;
+      }
 
-function render(){
-  questionText.textContent=QUESTIONS[idx].q;
-  optA.textContent=QUESTIONS[idx].a;
-  optB.textContent=QUESTIONS[idx].b;
-  count.textContent=`Question ${idx+1}/${QUESTIONS.length}`;
-  bar.style.width=(idx/QUESTIONS.length*100)+"%";
-}
+      render();
+    }
 
-function choose(choice){
-  picks.push(choice);
-  idx++;
-  if(idx>=QUESTIONS.length){
-    finish();
-    return;
-  }
-  render();
-}
+    function finish() {
+      bar.style.width = "100%";
+      questionBox.style.display = "none";
+      revealBox.style.display = "block";
+      summary.innerHTML = "<strong>Your path:</strong><br>" + picks.join(" ➜ ");
+    }
 
-function finish(){
-  bar.style.width="100%";
-  questionBox.style.display="none";
-  revealBox.style.display="block";
-  summary.innerHTML="<strong>Your path:</strong><br>"+picks.join(" ➜ ");
-}
+    function showImage() {
+      imageBox.style.display = "block";
+      revealBtn.style.display = "none";
 
-function restart(){
-  idx=0;
-  picks=[];
-  questionBox.style.display="block";
-  revealBox.style.display="none";
-  render();
-}
+      setTimeout(() => {
+        imageBox.style.opacity = "1";
+      }, 50);
+    }
 
-optA.onclick=()=>choose(optA.textContent);
-optB.onclick=()=>choose(optB.textContent);
+    function restart() {
+      idx = 0;
+      picks = [];
+      questionBox.style.display = "block";
+      revealBox.style.display = "none";
+      imageBox.style.display = "none";
+      imageBox.style.opacity = "0";
+      revealBtn.style.display = "inline-block";
+      render();
+    }
 
-render();
-</script>
+    optA.onclick = () => choose(optA.textContent);
+    optB.onclick = () => choose(optB.textContent);
 
+    render();
+  </script>
 </body>
 </html>
